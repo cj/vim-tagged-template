@@ -84,19 +84,18 @@ function! jspretmpl#register_tag(tagname, filetype)
 endfunction
 
 function! jspretmpl#loadAndApply(...)
-  if a:0 == 0
-    return
-  endif
   for k in keys(s:rule_map)
     call jspretmpl#loadOtherSyntax(k)
     call jspretmpl#applySyntax(k, s:rule_map[k])
   endfor
-  let l:ft = a:1
-  call jspretmpl#loadOtherSyntax(l:ft)
-  if !len(keys(s:rule_map))
-    call jspretmpl#applySyntax(l:ft, '')
-  else
-    call jspretmpl#applySyntax(l:ft, '`')
+  if a:0 == 1
+    let l:ft = a:1
+    call jspretmpl#loadOtherSyntax(l:ft)
+    if !len(keys(s:rule_map))
+      call jspretmpl#applySyntax(l:ft, '')
+    else
+      call jspretmpl#applySyntax(l:ft, '`')
+    endif
   endif
 endfunction
 
