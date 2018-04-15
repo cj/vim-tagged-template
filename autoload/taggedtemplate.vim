@@ -71,12 +71,6 @@ function! taggedtemplate#setSyntax(tag, filetype)
 endfunction
 
 function! taggedtemplate#applySyntaxMap()
-  if exists('g:taggedtemplate#syntaxApplied')
-    return
-  endif
-
-  let g:taggedtemplate#syntaxApplied = 1
-
   "echom 'Applying syntax map'
   if exists('g:taggedtemplate#tagSyntaxMap')
     for [tag, filetype] in items(g:taggedtemplate#tagSyntaxMap)
