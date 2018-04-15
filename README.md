@@ -1,141 +1,49 @@
-# vim-js-pretty-template
+# vim-tagged-template
 
-A Vim plugin to highlight JavaScript's [Template Strings](http://tc39wiki.calculist.org/es6/template-strings/) contents in other `FileType` syntax rule which you want.
+*NOTE*: This plugin is a fork of
+[vim-js-pretty-template](https://github.com/Quramy/vim-js-pretty-template).
+I began this fork as an attempt to patch `vim-js-pretty-template` with new
+features, but before I got very far I had already redesigned the API
+substantially and decided that this should live as its own plugin until such
+time as it can be upstreamed.
 
-```js
-var htmlTempl = `
-<div class="row">
-  <div class="col-md-12">
-    <span>{{ctrl.message}}</span>
-  </div>
-</div>
-`;
-```
+This plugin lets you configure tags for JavaScript/TypeScript
+[Template Strings (aka Template Literals)](http://tc39wiki.calculist.org/es6/template-strings/)
+with special highlighting for their contents. For example, you may want to
+highlight the contents of a template string tagged with `html` as actual HTML.
 
-![capture](screencast01.gif)
+Here is a short demo of the syntax highlighting that this plugin enables:
 
-Template Strings is available with [Babel](https://babeljs.io/), [google/traceur-compile](https://github.com/google/traceur-compiler) and [TypeScript](http://www.typescriptlang.org/).
+![demo](taggedtemplate.gif)
 
-## How to install 
+## How to install
 
-### Vundle
-
-Place this in your `.vimrc`:
-
-```vim
-Plugin 'Quramy/vim-js-pretty-template'
-```
-
-then run the following in Vim:
+You can use your Vim plugin manager of choice to install the plugin. For
+example, with vim-plug you would add this to your `.vimrc`:
 
 ```vim
-:source %
-:PluginInstall
-```
-
-### NeoBundle
-
-```vim
-NeoBundle 'Quramy/vim-js-pretty-template'
-```
-
-then run the following in Vim:
-
-```vim
-:source %
-:NeoBundleInstall
-```
-
-### Pathogen
-Run the following in a terminal:
-
-```sh
-git clone https://github.com/Quramy/vim-js-pretty-template.git ~/.vim/bundle/vim-js-pretty-template
+Plug 'cdata/vim-tagged-template'
 ```
 
 ## Usage
 
-This plugin provides the `:JsPreTmpl` command.  For example:
+In order to map template tags to file syntaxes, you need to set the global
+`g:taggedtemplate#tagSyntaxMap`. Here is an example that configures syntax
+highlighting for HTML, CSS and Markdown:
 
 ```vim
-:JsPreTmpl html
+" NOTE: Tag on the left, filetype on the right
+let g:taggedtemplate#tagSyntaxMap = {
+  \ "html": "html",
+  \ "md":   "markdown",
+  \ "css":  "css" }
 ```
 
-Executing the above, a template string is highlighted with HTML way.
-
-This command requires an argument. It's a `FileType` name which you can apply into templates in your JavaScript code.
-
-If you want to apply automatically, you can append the following to your `.vimrc`:
+Then, you need to configure it to apply for the appropriate filetypes. Here
+is an example to configure it to apply to JavaScript and TypeScript files:
 
 ```vim
-autocmd FileType javascript JsPreTmpl html
-```
-
-### Tagged Template Literal
-You can override the default rule defined `:JsPreTml` command with another rule using `jspretmpl#register_tag()` function. For example,
-
-```vim
-" Register tag name associated the filetype
-call jspretmpl#register_tag('gql', 'graphql')
-
-autocmd FileType javascript JsPreTmpl html
-```
-
-Then your JavaScript codes are Highlighted as the following:
-
-```javascript
-// HTML way default
-const template = `
-  <div>html</div>
-`;
-
-// GraphQL way if gql tagged
-const query = gql`
-  fragment on User {
-    name
-  }
-`;
-```
-
-### For alternative JavaScript users
-
-vim-js-pretty-template is also compatible for TypeScript, Dart and CoffeeScript.
-
-* TypeScript
-* Dart
-* CoffeeScript
-
-For example:
-
-```vim
-autocmd FileType typescript JsPreTmpl markdown
-autocmd FileType typescript syn clear foldBraces " For leafgarland/typescript-vim users only. Please see #1 for details.
-```
-
-then the following template string is highlighted:
-
-```typescript
-var tmpl: string = `
-## Title
-*Highlighted in Markdown way.*
-`;
-```
-
-or for example:
-
-```vim
-autocmd FileType dart JsPreTmpl xml
-```
-
-then: 
-
-```dart
-var tmpl = """
-<!-- highlighted in XML way -->
-<svg:svg xmlns:svg="http://www.w3.org/2000/svg">
-  <svg:circle cx="100" cy="100" r="50"></svg:circle>
-</svg:svg>
-""";
+autocmd FileType javascript,typescript : call taggedtemplate#applySyntaxMap()
 ```
 
 ## License
