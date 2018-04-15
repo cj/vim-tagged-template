@@ -14,7 +14,7 @@ highlight the contents of a template string tagged with `html` as actual HTML.
 
 Here is a short demo of the syntax highlighting that this plugin enables:
 
-![demo](taggedtemplate.gif)
+![demo](taggedtemplates.gif)
 
 ## How to install
 
