@@ -50,11 +50,12 @@ function! s:setTagRegionSyntax(tag, filetype)
 
   let start = '+'.a:tag.'`+'
   let end = '+`+'
-  let skip = '"\(\\`\|\${[^}]*`\|`\(.*\(\${\)\@!.*\)*}\)"'
+
+  let skip = '"\(\\`\|\${[^}]*`\|\(\<\K\k*\ze`[^`]*\)\)"'
 
   call s:loadSyntax(group, a:filetype)
 
-  execute 'syntax region '.region.' matchgroup=taggedTemplateTicks start='.start.' skip='.skip.' end='.end.' keepend contains=@'.group.' containedin=@jsExpression'
+  execute 'syntax region '.region.' matchgroup=taggedTemplateTicks start='.start.' skip='.skip.' end='.end.' keepend contains=@'.group.' containedin=@jsExpression extend'
 endfunction
 
 function! s:setTagExpressionSyntax(filetype)
