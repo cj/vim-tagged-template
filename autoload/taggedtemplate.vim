@@ -62,7 +62,8 @@ function! s:setTagExpressionSyntax(filetype)
   let region = s:taggedTemplateRegion(a:filetype)
   let expression = s:taggedTemplateExpression(a:filetype)
 
-  execute 'syntax region '.expression.' matchgroup=taggedTemplateBraces start=+${+ end=+}+ keepend contains=@jsExpression containedin='.region
+  execute 'syntax region '.expression.' matchgroup=taggedTemplateBraces start=+${+ end=+}+ keepend contains=@jsExpression containedin=htmlTag,htmlValue,'.region
+  execute 'syntax match taggedTemplateBraces /\/\// keepend containedin=htmlEndTag'
 endfunction
 
 function! taggedtemplate#setSyntax(tag, filetype)
@@ -81,7 +82,7 @@ function! taggedtemplate#applySyntaxMap()
   endif
 
   highlight link taggedTemplateTicks Type
-  highlight link taggedTemplateBraces Comment
+  highlight link taggedTemplateBraces jsTemplateBraces
 endfunction
 
 let &cpo = s:save_cpo
