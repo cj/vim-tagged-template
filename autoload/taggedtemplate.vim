@@ -55,15 +55,16 @@ function! s:setTagRegionSyntax(tag, filetype)
 
   call s:loadSyntax(group, a:filetype)
 
-  execute 'syntax region '.region.' matchgroup=taggedTemplateTicks start='.start.' skip='.skip.' end='.end.' keepend contains=@'.group.' containedin=@jsExpression extend'
+  execute 'syntax region '.region.' matchgroup=taggedTemplateTicks start='.start.' skip='.skip.' end='.end.' keepend contains=@'.group.' containedin=@jsExpression,@typescriptExpression extend'
 endfunction
 
 function! s:setTagExpressionSyntax(filetype)
   let region = s:taggedTemplateRegion(a:filetype)
   let expression = s:taggedTemplateExpression(a:filetype)
 
-  execute 'syntax region '.expression.' matchgroup=taggedTemplateBraces start=+${+ end=+}+ keepend contains=@jsExpression containedin=htmlTag,html.*,'.region
-  execute 'syntax match taggedTemplateBraces /\/\// keepend containedin=htmlEndTag'
+  " execute 'syntax region '.expression.' matchgroup=taggedTemplateBraces start=+${+ end=+}+ keepend contains=@jsExpression containedin=htmlTag,html.*,'.region
+  execute 'syntax region '.expression.' matchgroup=taggedTemplateBraces start=+${+ end=+}+ keepend contains=@typescriptExpression containedin=htmlTag,html.*,'.region
+  execute 'syntax match taggedTemplateBraces /\/\// keepend containedin=htmlEndTag,htmlTag'
 endfunction
 
 function! taggedtemplate#setSyntax(tag, filetype)
